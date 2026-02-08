@@ -1,6 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Menu, Plus, TrendingUp, TrendingDown } from 'lucide-react';
+import { Menu, Plus } from 'lucide-react';
 import { BalanceCard } from '@/components/BalanceCard';
 import { ExpenseItem } from '@/components/ExpenseItem';
 import { AddExpenseModal } from '@/components/AddExpenseModal';
@@ -8,19 +8,45 @@ import { AddIncomeModal } from '@/components/AddIncomeModal';
 import { SideDrawer } from '@/components/SideDrawer';
 import { BottomNav } from '@/components/BottomNav';
 import { InsightCard } from '@/components/InsightCard';
-import { useExpenses, useCategories, useIncome } from '@/hooks/useData';
+import { useExpenses, useCategories, useIncome, useBudgets } from '@/hooks/useData';
+import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from 'sonner';
 
 export default function DashboardPage() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [expenseModalOpen, setExpenseModalOpen] = useState(false);
   const [incomeModalOpen, setIncomeModalOpen] = useState(false);
-  const { todayExpenses, deleteExpense, addExpense } = useExpenses();
+  const { todayExpenses, deleteExpense, addExpense, allExpenses } = useExpenses();
   const { categories } = useCategories();
   const { income, addIncome } = useIncome();
+  const { budgets } = useBudgets();
+  const { formatAmount } = useCurrency();
 
   const totalIncome = useMemo(() => income.data?.reduce((s, i) => s + Number(i.amount), 0) ?? 0, [income.data]);
   const totalExpenses = useMemo(() => todayExpenses.data?.reduce((s, e) => s + Number(e.amount), 0) ?? 0, [todayExpenses.data]);
+
+  // Budget notification check
+  useEffect(() => {
+    if (!budgets.data || !allExpenses.data) return;
+    const now = new Date();
+    const monthExpenses = allExpenses.data.filter((e) => {
+      const d = new Date(e.expense_date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    });
+
+    budgets.data.forEach((budget) => {
+      const catSpent = monthExpenses
+        .filter((e) => e.category_id === budget.category_id)
+        .reduce((s, e) => s + Number(e.amount), 0);
+      const ratio = catSpent / Number(budget.amount);
+      const catName = budget.categories?.name || 'Category';
+      if (ratio >= 1) {
+        toast.warning(`${catName} budget exceeded! ${formatAmount(catSpent)} / ${formatAmount(Number(budget.amount))}`);
+      } else if (ratio >= 0.8) {
+        toast.info(`${catName} budget at ${(ratio * 100).toFixed(0)}% — ${formatAmount(catSpent)} / ${formatAmount(Number(budget.amount))}`);
+      }
+    });
+  }, [budgets.data, allExpenses.data, formatAmount]);
 
   const handleAddExpense = (data: any) => {
     addExpense.mutate(data, { onSuccess: () => toast.success('Expense added!'), onError: () => toast.error('Failed to add expense') });
@@ -58,7 +84,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 gap-3">
           <InsightCard
             title="Daily Average"
-            description={`$${(totalExpenses / 7).toFixed(2)} per day this week`}
+            description={`${formatAmount(totalExpenses / 7)} per day this week`}
             type="info"
           />
           <InsightCard

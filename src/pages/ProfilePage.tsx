@@ -3,7 +3,7 @@ import { PageShell } from '@/components/PageShell';
 import { BottomNav } from '@/components/BottomNav';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfile } from '@/hooks/useData';
-import { User, Edit2, Lock, Grid3X3, Wallet, Lightbulb, BarChart3, RefreshCw, Settings, Info, HelpCircle, LogOut, ChevronRight } from 'lucide-react';
+import { User, Edit2, Lock, Settings, Info, HelpCircle, LogOut, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { ConfirmModal } from '@/components/ConfirmModal';
 import { toast } from 'sonner';
@@ -19,18 +19,13 @@ export default function ProfilePage() {
       items: [
         { label: 'Personal Details', icon: User, route: '/edit-profile' },
         { label: 'Change Password', icon: Lock, route: '/settings' },
-        { label: 'Categories', icon: Grid3X3, route: '/categories' },
-        { label: 'Budgets', icon: Wallet, route: '/budgets' },
-        { label: 'Smart Insights', icon: Lightbulb, route: '/insights' },
-        { label: 'Reports', icon: BarChart3, route: '/analytics' },
-        { label: 'Recurring Payments', icon: RefreshCw, route: '/dashboard' },
       ],
     },
     {
       items: [
         { label: 'Settings', icon: Settings, route: '/settings' },
-        { label: 'About App', icon: Info, route: '/support' },
-        { label: 'Contact Support', icon: HelpCircle, route: '/support' },
+        { label: 'About App', icon: Info, route: '/about' },
+        { label: 'Contact Support', icon: HelpCircle, route: '/contact-support' },
       ],
     },
   ];
