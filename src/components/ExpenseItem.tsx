@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Edit2, Trash2 } from 'lucide-react';
-import { format } from 'date-fns';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 interface ExpenseItemProps {
   id: string;
@@ -15,6 +15,7 @@ interface ExpenseItemProps {
 }
 
 export function ExpenseItem({ id, description, amount, time, categoryIcon, categoryName, categoryColor, onEdit, onDelete }: ExpenseItemProps) {
+  const { formatAmount } = useCurrency();
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
@@ -34,7 +35,7 @@ export function ExpenseItem({ id, description, amount, time, categoryIcon, categ
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <span className="font-semibold text-sm text-destructive">-${amount.toFixed(2)}</span>
+        <span className="font-semibold text-sm text-destructive">-{formatAmount(amount)}</span>
         <button onClick={() => onEdit(id)} className="h-7 w-7 rounded-lg hover:bg-secondary flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
           <Edit2 className="h-3.5 w-3.5" />
         </button>

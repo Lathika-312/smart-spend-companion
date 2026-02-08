@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, User, Grid3X3, Wallet, Lightbulb, BarChart3, RefreshCw, Settings, Info, HelpCircle, LogOut, ChevronRight } from 'lucide-react';
+import { X, User, Grid3X3, Wallet, Lightbulb, BarChart3, Settings, Info, HelpCircle, LogOut, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProfile } from '@/hooks/useData';
@@ -23,7 +23,6 @@ const menuSections = [
       { label: 'Budgets', icon: Wallet, route: '/budgets' },
       { label: 'Smart Insights', icon: Lightbulb, route: '/insights' },
       { label: 'Reports', icon: BarChart3, route: '/analytics' },
-      { label: 'Recurring Payments', icon: RefreshCw, route: '/dashboard' },
     ],
   },
   {
