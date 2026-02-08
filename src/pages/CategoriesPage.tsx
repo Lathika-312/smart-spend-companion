@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PageShell } from '@/components/PageShell';
 import { useCategories } from '@/hooks/useData';
 import { Plus, Edit2, Trash2, X } from 'lucide-react';
@@ -12,6 +13,7 @@ const EMOJI_OPTIONS = ['🍔', '✈️', '🛍️', '📄', '🏥', '🏠', '�
 const COLOR_OPTIONS = ['#EF4444', '#3B82F6', '#8B5CF6', '#F59E0B', '#10B981', '#6366F1', '#EC4899', '#14B8A6', '#F97316'];
 
 export default function CategoriesPage() {
+  const navigate = useNavigate();
   const { categories, addCategory, updateCategory, deleteCategory } = useCategories();
   const [modalOpen, setModalOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
@@ -49,7 +51,8 @@ export default function CategoriesPage() {
             key={cat.id}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-card rounded-2xl p-4 text-center shadow-card relative group"
+            className="bg-card rounded-2xl p-4 text-center shadow-card relative group cursor-pointer"
+            onClick={() => navigate(`/categories/${cat.id}`)}
           >
             <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 flex gap-1 transition-opacity">
               <button onClick={() => openEdit(cat)} className="h-6 w-6 rounded-lg bg-secondary flex items-center justify-center">
