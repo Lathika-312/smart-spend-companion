@@ -35,8 +35,8 @@ const menuSections = [
   {
     title: 'Support',
     items: [
-      { label: 'About App', icon: Info, route: '/support' },
-      { label: 'Contact Support', icon: HelpCircle, route: '/support' },
+      { label: 'About App', icon: Info, route: '/about' },
+      { label: 'Contact Support', icon: HelpCircle, route: '/contact-support' },
     ],
   },
 ];

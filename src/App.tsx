@@ -15,6 +15,9 @@ import CategoriesPage from "./pages/CategoriesPage";
 import BudgetsPage from "./pages/BudgetsPage";
 import SettingsPage from "./pages/SettingsPage";
 import SupportPage from "./pages/SupportPage";
+import AboutPage from "./pages/AboutPage";
+import ContactSupportPage from "./pages/ContactSupportPage";
+import CategoryDetailPage from "./pages/CategoryDetailPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -47,6 +50,9 @@ const AppRoutes = () => (
     <Route path="/budgets" element={<ProtectedRoute><BudgetsPage /></ProtectedRoute>} />
     <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
     <Route path="/support" element={<ProtectedRoute><SupportPage /></ProtectedRoute>} />
+    <Route path="/about" element={<ProtectedRoute><AboutPage /></ProtectedRoute>} />
+    <Route path="/contact-support" element={<ProtectedRoute><ContactSupportPage /></ProtectedRoute>} />
+    <Route path="/categories/:id" element={<ProtectedRoute><CategoryDetailPage /></ProtectedRoute>} />
     <Route path="*" element={<NotFound />} />
   </Routes>
 );

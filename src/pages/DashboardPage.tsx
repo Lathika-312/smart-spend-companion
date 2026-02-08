@@ -93,13 +93,14 @@ export default function DashboardPage() {
         </div>
       </main>
 
-      {/* FAB */}
+      {/* FAB - Centered */}
       <motion.button
         whileTap={{ scale: 0.9 }}
         onClick={() => setExpenseModalOpen(true)}
-        className="fixed bottom-20 right-4 z-30 h-14 w-14 gradient-primary rounded-2xl shadow-elevated flex items-center justify-center text-primary-foreground"
+        className="fixed bottom-20 left-1/2 -translate-x-1/2 z-30 h-14 px-6 gradient-primary rounded-full shadow-elevated flex items-center justify-center gap-2 text-primary-foreground"
       >
-        <Plus className="h-6 w-6" />
+        <Plus className="h-5 w-5" />
+        <span className="font-semibold text-sm">Add Expense</span>
       </motion.button>
 
       <BottomNav />

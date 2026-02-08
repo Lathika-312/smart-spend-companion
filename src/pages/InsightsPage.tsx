@@ -39,7 +39,25 @@ export default function InsightsPage() {
       result.push({ title: 'Category Gap', description: `${sorted[0][0]} is ${diff}% higher than ${sorted[1][0]}`, type: 'info' });
     }
 
-    result.push({ title: 'Suggested Action', description: 'Try setting category budgets to control spending in your top areas', type: 'positive' });
+    // Dynamic suggested actions
+    if (sorted[0]) {
+      const topPct = totalExpenses > 0 ? ((sorted[0][1] / totalExpenses) * 100).toFixed(0) : '0';
+      result.push({ title: 'Suggested Action', description: `Reduce ${sorted[0][0]} expenses — it accounts for ${topPct}% of your total spending.`, type: 'warning' });
+    }
+    if (sorted[1] && sorted[0]) {
+      const weeklyAvg = (totalExpenses / (days || 1)) * 7;
+      result.push({ title: 'Weekly Tip', description: `Try limiting ${sorted[0][0]} spending to $${(weeklyAvg * 0.2).toFixed(0)}/week to save more.`, type: 'positive' });
+    }
+    if (totalIncome > 0 && totalExpenses < totalIncome) {
+      const saveable = ((totalIncome - totalExpenses) * 0.1).toFixed(0);
+      result.push({ title: 'Savings Goal', description: `Increase monthly savings by $${saveable} based on your spending patterns.`, type: 'positive' });
+    }
+    if (sorted.length >= 2) {
+      const secondCat = sorted[1];
+      if (secondCat[1] > totalExpenses * 0.25) {
+        result.push({ title: 'Spending Alert', description: `Your ${secondCat[0]} category is unusually high — consider reducing optional purchases.`, type: 'warning' });
+      }
+    }
 
     return result;
   }, [allExpenses.data, income.data]);
